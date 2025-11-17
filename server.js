@@ -11,25 +11,27 @@ const server = http.createServer(app);
 // Serve your docs folder (index.html, style.css, main.js) if you want Render to serve the frontend too
 app.use(express.static("docs"));
 
+// Socket.io server with CORS for your GH Pages frontend
+const io = new Server(server, {
+  cors: {
+    origin: "https://snavc270.github.io", // your GH Pages domain
+    methods: ["GET", "POST"]
+    // You can also use origin: "*" for testing
+  }
+});
+
 io.on("connection", (socket) => {
-  console.log("🟢 New user connected:", socket.id);
+  console.log("User connected: " + socket.id);
 
   socket.on("draw", (data) => {
-    // rebroadcast to everyone except the sender
     socket.broadcast.emit("draw", data);
   });
 
-  socket.on("clear", () => {
-    // rebroadcast to everyone except the sender
-    socket.broadcast.emit("clear");
-  });
-
   socket.on("disconnect", () => {
-    console.log("🔴 User disconnected:", socket.id);
+    console.log("User disconnected: " + socket.id);
   });
-  
 });
 
-
-
-server.listen(3000, () => console.log("Server running on http://localhost:3000"));
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
