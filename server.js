@@ -14,7 +14,7 @@ app.use(express.static("docs"));
 // Socket.io server with CORS for your GH Pages frontend
 const io = new Server(server, {
   cors: {
-    origin: "https://snavc270.github.io", // your GH Pages domain
+    origin: "https://nicktavaf.github.io", // your GH Pages domain
     methods: ["GET", "POST"]
     // You can also use origin: "*" for testing
   }
